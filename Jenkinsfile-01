@@ -3,14 +3,15 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
-		timeout(time: 12, unit: 'HOURS')
+        timeout(time: 12, unit: 'HOURS')
         timestamps()
     }
 
- 
+    // this section configures triggers
     triggers {
           cron '@midnight'
     }
+
 
     stages {
         stage('Requirements') {
@@ -18,19 +19,16 @@ pipeline {
                 echo 'Installing requirements...'
             }
         }
-
         stage('Build') {
             steps {
                 echo 'Building..'
             }
         }
-
         stage('Test') {
             steps {
                 echo 'Testing..'
             }
         }
-
         stage('Report') {
             steps {
                 echo 'Reporting....'
@@ -38,6 +36,9 @@ pipeline {
         }
     }
 
-    
+    post {
+
             echo "This step will run after all other steps have finished.  It will always run, even in the status of the build is not SUCCESS"
+        }
+    }
 }
